@@ -1,5 +1,5 @@
 const HTMLToCache = '/';
-const version = 'MSW V0.3';
+const version = 'MSW V0.4';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(version).then((cache) => {
@@ -19,8 +19,6 @@ self.addEventListener('fetch', (event) => {
   const requestToFetch = event.request.clone();
   event.respondWith(
   caches.match(event.request.clone()).then((cached) => {
-    console.log(event);
-    console.log(hasHash(event.request.url));
     // We don't return cached HTML (except if fetch failed)
     if (cached) {
       const resourceType = cached.headers.get('content-type');
@@ -85,7 +83,6 @@ function hasHash(element) {
 }
 
 function hasSameHash(firstUrl, secondUrl) {
-  console.log(firstUrl, secondUrl);
   if (typeof firstUrl === 'string' && typeof secondUrl === 'string') {
     var first = new URL(firstUrl).pathname.replace(".js", "").replace(".css", "").replace("/", "");
     var last = new URL(secondUrl).pathname.replace(".js", "").replace(".css", "").replace("/", "");
